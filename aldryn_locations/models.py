@@ -3,7 +3,7 @@ from django.http import QueryDict
 from django.template.defaultfilters import urlencode
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from cms.models import CMSPlugin, Site
 from cms.utils.i18n import get_current_language
@@ -18,7 +18,7 @@ GOOGLE_MAPS_STATICMAPS_URL = getattr(
     'ALDRYN_LOCATIONS_GOOGLEMAPS_STATICMAPS_URL',
     'https://maps.googleapis.com/maps/api/staticmap',
 )
-MARKER_CONTENT_FORMAT = unicode(settings.ALDRYN_LOCATIONS_MARKER_CONTENT_FORMAT)
+MARKER_CONTENT_FORMAT = str(settings.ALDRYN_LOCATIONS_MARKER_CONTENT_FORMAT)
 ZOOM_LEVELS = [(str(level), str(level)) for level in range(22)]
 
 ROADMAP = 'roadmap'
@@ -43,6 +43,7 @@ class MapPlugin(CMSPlugin):
         CMSPlugin,
         related_name='%(app_label)s_%(class)s',
         parent_link=True,
+        on_delete=models.CASCADE,
     )
 
     title = models.CharField(_("map title"), max_length=255, blank=True,
@@ -165,6 +166,7 @@ class LocationPlugin(CMSPlugin):
         CMSPlugin,
         related_name='%(app_label)s_%(class)s',
         parent_link=True,
+        on_delete=models.CASCADE,
     )
 
     address = models.CharField(_("address"), max_length=255)
@@ -228,17 +230,19 @@ class PathLocationPlugin(CMSPlugin):
         CMSPlugin,
         related_name='%(app_label)s_%(class)s',
         parent_link=True,
+        on_delete=models.CASCADE
     )
 
     path_file = FilerFileField(
         verbose_name=_('Path File (e.g. KML)'),
         related_name='+',
+        on_delete=models.CASCADE,
     )
 
     def copy_relations(self, oldinstance):
         self.path_file = oldinstance.path_file
 
-    def __unicode__(self):
+    def __str__(self):
         if self.path_file:
             return self.path_file.name
         return self.pk
@@ -257,6 +261,7 @@ class EmbedPlugin(CMSPlugin):
         CMSPlugin,
         related_name='%(app_label)s_%(class)s',
         parent_link=True,
+        on_delete=models.CASCADE,
     )
 
     query = models.CharField(
@@ -293,7 +298,7 @@ class EmbedPlugin(CMSPlugin):
     class Meta:
         abstract = True
 
-    def __unicode__(self):
+    def __str__(self):
         return self.query or self.center
 
     def get_query(self):
@@ -410,7 +415,7 @@ class EmbedDirectionsPlugin(EmbedPlugin):
     units = models.CharField(
         _('units for distances in results'), max_length=10, default=AUTO[0], choices=[AUTO] + UNITS_CHOICES)
 
-    def __unicode__(self):
+    def __str__(self):
         ret = self.origin
         if self.waypoints:
             ret += ' -> %s' % ' -> '.join(self.waypoints.split('|'))

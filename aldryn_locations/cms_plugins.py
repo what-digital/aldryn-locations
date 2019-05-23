@@ -1,7 +1,7 @@
 import json
 
 from django.utils.translation import ugettext_lazy as _
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool

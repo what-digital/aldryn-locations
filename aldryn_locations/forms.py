@@ -66,7 +66,6 @@ class EmbedViewPluginForm(ModelForm):
     class Meta:
         model = EmbedViewPlugin
         fields = [
-            'query',
             'map_type',
             'center',
             'zoom',
