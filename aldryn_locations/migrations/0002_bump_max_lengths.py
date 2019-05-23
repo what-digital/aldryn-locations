@@ -14,62 +14,62 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='embeddirectionsplugin',
             name='height',
-            field=models.CharField(default=b'400px', help_text='Plugin height (in pixels).', max_length=255, verbose_name='height'),
+            field=models.CharField(default='400px', help_text='Plugin height (in pixels).', max_length=255, verbose_name='height'),
         ),
         migrations.AlterField(
             model_name='embeddirectionsplugin',
             name='map_type',
-            field=models.CharField(default=b'roadmap', max_length=255, verbose_name='Map Type', choices=[(b'roadmap', 'Roadmap'), (b'satellite', 'Satellite')]),
+            field=models.CharField(default='roadmap', max_length=255, verbose_name='Map Type', choices=[('roadmap', 'Roadmap'), ('satellite', 'Satellite')]),
         ),
         migrations.AlterField(
             model_name='embeddirectionsplugin',
             name='width',
-            field=models.CharField(default=b'100%', help_text='Plugin width (in pixels or percent).', max_length=255, verbose_name='width'),
+            field=models.CharField(default='100%', help_text='Plugin width (in pixels or percent).', max_length=255, verbose_name='width'),
         ),
         migrations.AlterField(
             model_name='embedplaceplugin',
             name='height',
-            field=models.CharField(default=b'400px', help_text='Plugin height (in pixels).', max_length=255, verbose_name='height'),
+            field=models.CharField(default='400px', help_text='Plugin height (in pixels).', max_length=255, verbose_name='height'),
         ),
         migrations.AlterField(
             model_name='embedplaceplugin',
             name='map_type',
-            field=models.CharField(default=b'roadmap', max_length=255, verbose_name='Map Type', choices=[(b'roadmap', 'Roadmap'), (b'satellite', 'Satellite')]),
+            field=models.CharField(default='roadmap', max_length=255, verbose_name='Map Type', choices=[('roadmap', 'Roadmap'), ('satellite', 'Satellite')]),
         ),
         migrations.AlterField(
             model_name='embedplaceplugin',
             name='width',
-            field=models.CharField(default=b'100%', help_text='Plugin width (in pixels or percent).', max_length=255, verbose_name='width'),
+            field=models.CharField(default='100%', help_text='Plugin width (in pixels or percent).', max_length=255, verbose_name='width'),
         ),
         migrations.AlterField(
             model_name='embedsearchplugin',
             name='height',
-            field=models.CharField(default=b'400px', help_text='Plugin height (in pixels).', max_length=255, verbose_name='height'),
+            field=models.CharField(default='400px', help_text='Plugin height (in pixels).', max_length=255, verbose_name='height'),
         ),
         migrations.AlterField(
             model_name='embedsearchplugin',
             name='map_type',
-            field=models.CharField(default=b'roadmap', max_length=255, verbose_name='Map Type', choices=[(b'roadmap', 'Roadmap'), (b'satellite', 'Satellite')]),
+            field=models.CharField(default='roadmap', max_length=255, verbose_name='Map Type', choices=[('roadmap', 'Roadmap'), ('satellite', 'Satellite')]),
         ),
         migrations.AlterField(
             model_name='embedsearchplugin',
             name='width',
-            field=models.CharField(default=b'100%', help_text='Plugin width (in pixels or percent).', max_length=255, verbose_name='width'),
+            field=models.CharField(default='100%', help_text='Plugin width (in pixels or percent).', max_length=255, verbose_name='width'),
         ),
         migrations.AlterField(
             model_name='embedviewplugin',
             name='height',
-            field=models.CharField(default=b'400px', help_text='Plugin height (in pixels).', max_length=255, verbose_name='height'),
+            field=models.CharField(default='400px', help_text='Plugin height (in pixels).', max_length=255, verbose_name='height'),
         ),
         migrations.AlterField(
             model_name='embedviewplugin',
             name='map_type',
-            field=models.CharField(default=b'roadmap', max_length=255, verbose_name='Map Type', choices=[(b'roadmap', 'Roadmap'), (b'satellite', 'Satellite')]),
+            field=models.CharField(default='roadmap', max_length=255, verbose_name='Map Type', choices=[('roadmap', 'Roadmap'), ('satellite', 'Satellite')]),
         ),
         migrations.AlterField(
             model_name='embedviewplugin',
             name='width',
-            field=models.CharField(default=b'100%', help_text='Plugin width (in pixels or percent).', max_length=255, verbose_name='width'),
+            field=models.CharField(default='100%', help_text='Plugin width (in pixels or percent).', max_length=255, verbose_name='width'),
         ),
         migrations.AlterField(
             model_name='locationplugin',
@@ -89,12 +89,12 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='mapplugin',
             name='height',
-            field=models.CharField(default=b'400px', help_text='Plugin height (in pixels).', max_length=255, verbose_name='height'),
+            field=models.CharField(default='400px', help_text='Plugin height (in pixels).', max_length=255, verbose_name='height'),
         ),
         migrations.AlterField(
             model_name='mapplugin',
             name='map_type',
-            field=models.CharField(default=b'roadmap', max_length=255, verbose_name='Map Type', choices=[(b'roadmap', 'Roadmap'), (b'satellite', 'Satellite'), (b'hybrid', 'Hybrid'), (b'terrain', 'Terrain')]),
+            field=models.CharField(default='roadmap', max_length=255, verbose_name='Map Type', choices=[('roadmap', 'Roadmap'), ('satellite', 'Satellite'), ('hybrid', 'Hybrid'), ('terrain', 'Terrain')]),
         ),
         migrations.AlterField(
             model_name='mapplugin',
@@ -109,6 +109,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='mapplugin',
             name='width',
-            field=models.CharField(default=b'100%', help_text='Plugin width (in pixels or percent).', max_length=255, verbose_name='width'),
+            field=models.CharField(default='100%', help_text='Plugin width (in pixels or percent).', max_length=255, verbose_name='width'),
         ),
     ]

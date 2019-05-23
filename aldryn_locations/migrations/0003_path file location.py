@@ -17,8 +17,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PathLocationPlugin',
             fields=[
-                ('cmsplugin_ptr', models.OneToOneField(parent_link=True, related_name='aldryn_locations_pathlocationplugin', auto_created=True, primary_key=True, serialize=False, to='cms.CMSPlugin')),
-                ('path_file', filer.fields.file.FilerFileField(related_name='+', verbose_name='Path File (e.g. KML)', to='filer.File')),
+                ('cmsplugin_ptr', models.OneToOneField(parent_link=True, related_name='aldryn_locations_pathlocationplugin', auto_created=True, primary_key=True, serialize=False, to='cms.CMSPlugin', on_delete=models.CASCADE)),
+                ('path_file', filer.fields.file.FilerFileField(related_name='+', verbose_name='Path File (e.g. KML)', to='filer.File', on_delete=models.CASCADE)),
             ],
             options={
                 'abstract': False,
