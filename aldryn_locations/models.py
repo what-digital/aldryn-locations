@@ -144,7 +144,7 @@ class MapPlugin(CMSPlugin):
 
             lat_lng = location.get_lat_lng()
             location = (
-                ','.join(lat_lng) if lat_lng else
+                ','.join(map(str, lat_lng)) if lat_lng else
                 ' '.join((location.address, location.zipcode, location.city))
             )
             query += '&markers={}'.format(urlencode(location))
