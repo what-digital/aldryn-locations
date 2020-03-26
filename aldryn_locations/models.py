@@ -222,6 +222,9 @@ class LocationPlugin(CMSPlugin):
 class RouteLocationPlugin(LocationPlugin):
     route_planner = True
 
+    class Meta:
+        proxy = True
+
 
 class PathLocationPlugin(CMSPlugin):
     route_planner = False
