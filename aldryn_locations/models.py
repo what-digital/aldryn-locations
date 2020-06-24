@@ -219,11 +219,64 @@ class LocationPlugin(CMSPlugin):
         }
 
 
-class RouteLocationPlugin(LocationPlugin):
+class RouteLocationPlugin(CMSPlugin):
     route_planner = True
 
-    class Meta:
-        proxy = True
+    cmsplugin_ptr = models.OneToOneField(
+        CMSPlugin,
+        related_name='%(app_label)s_%(class)s',
+        parent_link=True,
+        on_delete=models.CASCADE,
+    )
+
+    address = models.CharField(_("address"), max_length=255)
+    zipcode = models.CharField(_("zip code"), max_length=30)
+    city = models.CharField(_("city"), max_length=255)
+
+    content = models.CharField(
+        _('Content'), max_length=255, blank=True,
+        help_text=_('Displayed in a info window above location marker')
+    )
+
+    lat = models.FloatField(
+        _('latitude'), null=True, blank=True,
+        help_text=_('Use latitude & longitude to fine tune the map position.'))
+
+    lng = models.FloatField(
+        _('longitude'), null=True, blank=True)
+
+    def __str__(self):
+        return u'%s, %s %s' % (self.address, self.zipcode, self.city)
+
+    def get_content(self):
+        if not self.content:
+            return None
+
+        fmt = MARKER_CONTENT_FORMAT
+
+        if not fmt:
+            return self.content
+
+        return fmt.format(
+            content=self.content,
+            address=self.address,
+            zipcode=self.zipcode,
+            city=self.city,
+            lat=self.lat,
+            lng=self.lng,
+        )
+
+    def get_lat_lng(self):
+        if self.lat and self.lng:
+            return self.lat, self.lng
+
+    def get_location_data_for_map(self):
+        return {
+            'address': u'{}, {} {}'.format(self.address, self.zipcode, self.city),
+            'latlng': self.get_lat_lng(),
+            'content': self.get_content(),
+            'admin': reverse('admin:cms_page_edit_plugin', args=[self.pk]),
+        }
 
 
 class PathLocationPlugin(CMSPlugin):
