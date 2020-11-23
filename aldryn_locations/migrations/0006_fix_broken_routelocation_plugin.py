@@ -2,7 +2,6 @@
 import django.db.models.deletion
 from cms import api
 from cms.models import CMSPlugin
-from cms.models import Placeholder
 from django.db import migrations
 from django.db import models
 
@@ -10,22 +9,20 @@ from django.db import models
 def transfer_route_location_plugin_data(apps, schema_editor):
 
     RouteLocationPluginTemp = apps.get_model('aldryn_locations', 'RouteLocationPluginTemp')
+    for broken_plugin in RouteLocationPluginTemp.objects.all():
+        broken_cms_plugin = CMSPlugin.objects.get(pk=broken_plugin.pk)
+        page = broken_cms_plugin.placeholder.page
 
-    for temp_plugin in RouteLocationPluginTemp.objects.all():
-        old_plugin = CMSPlugin.objects.get(pk=temp_plugin.pk)
-        placeholder_with_old_plugin = Placeholder.objects.get(pk=old_plugin.placeholder.pk)
-        page_with_old_plugin = placeholder_with_old_plugin.page
-
-        if _is_page_published(page_with_old_plugin):
-            draft_page = page_with_old_plugin.get_draft_object()
-            draft_placeholder = draft_page.placeholders.get(slot=placeholder_with_old_plugin.slot)
+        if page and _is_page_published(page):
+            draft_page = page.get_draft_object()
+            draft_placeholder = draft_page.placeholders.get(slot=broken_cms_plugin.placeholder.slot)
             draft_plugins = draft_placeholder.get_plugins()
             draft_parent_map_plugins = list(
                 filter(
-                    lambda x: (
-                        x.get_bound_plugin().plugin_type == old_plugin.parent.get_bound_plugin().plugin_type and
-                        x.get_bound_plugin().title == old_plugin.parent.get_bound_plugin().title and
-                        _is_numchild_value_broken(x)
+                    lambda draft_plugin: (
+                        draft_plugin.plugin_type == broken_cms_plugin.parent.plugin_type and
+                        draft_plugin.get_bound_plugin().title == broken_cms_plugin.parent.get_bound_plugin().title and
+                        _is_numchild_value_broken(draft_plugin)
                     ),
                     draft_plugins
                 )
@@ -41,39 +38,34 @@ def transfer_route_location_plugin_data(apps, schema_editor):
 
                 api.add_plugin(
                     placeholder=draft_placeholder,
-                    language=temp_plugin.language,
+                    language=broken_plugin.language,
                     target=draft_parent_map_plugin,
-                    address=temp_plugin.address,
-                    zipcode=temp_plugin.zipcode,
-                    city=temp_plugin.city,
-                    content=temp_plugin.content,
-                    depth=temp_plugin.depth,
-                    plugin_type=temp_plugin.plugin_type,
-                    creation_date=temp_plugin.creation_date,
-                    changed_date=temp_plugin.changed_date,
-                    lat=temp_plugin.lat,
-                    lng=temp_plugin.lng,
-                )
-            else:
-                print(
-                    "Failed to find the needed Map plugin on the Draft version of Page. "
-                    "Most probably it doesn't exist anymore."
+                    address=broken_plugin.address,
+                    zipcode=broken_plugin.zipcode,
+                    city=broken_plugin.city,
+                    content=broken_plugin.content,
+                    depth=broken_plugin.depth,
+                    plugin_type=broken_plugin.plugin_type,
+                    creation_date=broken_plugin.creation_date,
+                    changed_date=broken_plugin.changed_date,
+                    lat=broken_plugin.lat,
+                    lng=broken_plugin.lng,
                 )
 
         api.add_plugin(
-            placeholder=placeholder_with_old_plugin,
-            language=temp_plugin.language,
-            target=old_plugin.parent,
-            address=temp_plugin.address,
-            zipcode=temp_plugin.zipcode,
-            city=temp_plugin.city,
-            content=temp_plugin.content,
-            depth=temp_plugin.depth,
-            plugin_type=temp_plugin.plugin_type,
-            creation_date=temp_plugin.creation_date,
-            changed_date=temp_plugin.changed_date,
-            lat=temp_plugin.lat,
-            lng=temp_plugin.lng,
+            placeholder=broken_cms_plugin.placeholder,
+            language=broken_plugin.language,
+            target=broken_cms_plugin.parent,
+            address=broken_plugin.address,
+            zipcode=broken_plugin.zipcode,
+            city=broken_plugin.city,
+            content=broken_plugin.content,
+            depth=broken_plugin.depth,
+            plugin_type=broken_plugin.plugin_type,
+            creation_date=broken_plugin.creation_date,
+            changed_date=broken_plugin.changed_date,
+            lat=broken_plugin.lat,
+            lng=broken_plugin.lng,
         )
 
 
